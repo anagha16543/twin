@@ -1,0 +1,5 @@
+CO,Description,PO1,PO2,PO3,PO4,PO5,PO6,PO7,PO8,PO9,PO10,PO11,PSO1,PSO2
+CO1,Explain the architecture and training of deep feed-forward networks and optimisation algorithms.,3,2,,,,,,,,,,2,
+CO2,Build convolutional neural networks for image classification tasks.,3,,3,,3,,,,,,,3,
+CO3,Apply recurrent and transformer models to sequence data.,,2,3,2,3,,,,,,,,3
+CO4,"Evaluate deep learning models for bias, robustness and deployment constraints.",,2,,,,2,2,,,,2,,2

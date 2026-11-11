@@ -1,0 +1,24 @@
+# AI-NBA-Readiness-System .gitignore
+# Environment variables
+.env
+*.env
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+venv/
+.venv/
+
+# IDE files
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+# Local runtime (run.py)
+backend/nba_local.db
+backend/documents/uploads/
+backend/backups/
+.venv/

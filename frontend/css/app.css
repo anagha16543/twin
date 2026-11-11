@@ -1,0 +1,69 @@
+/* Additions for the multi-page Criterion 3 app */
+a.sb-item, a.sb-subitem, a.sb-leaf { text-decoration: none; }
+.sb-item.active { background: rgba(255,255,255,.12); }
+.sb-subitem.active { background: var(--green-500); color: #fff; }
+.sb-c3 { margin: 2px 0 6px 6px; padding-left: 8px; border-left: 1px dashed rgba(255,255,255,.18); }
+.sb-group { font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.45); margin: 8px 0 2px 8px; font-weight: 700; }
+.sb-leaf { display: flex; align-items: center; gap: 8px; padding: 5px 8px; border-radius: 7px; font-size: 12px; color: rgba(255,255,255,.82); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sb-leaf:hover { background: rgba(255,255,255,.07); color: #fff; }
+.sb-leaf.active { background: rgba(255,255,255,.14); color: #fff; font-weight: 600; }
+.sb-leaf .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; background: rgba(255,255,255,.3); }
+.sb-leaf .dot.PASS { background: #7fe0b8; } .sb-leaf .dot.WARNING { background: #f0c25a; }
+.sb-leaf .dot.FAIL { background: #f08a76; } .sb-leaf .dot.NEEDS_RULE_CLARIFICATION { background: #8fb5e0; }
+.sb-count { margin-left: auto; background: var(--red); color: #fff; font-size: 10px; border-radius: 99px; padding: 1px 7px; }
+
+.pipeline { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.pipe-step { display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: #fcfcfa; text-decoration: none; color: inherit; }
+.pipe-step:hover { border-color: var(--green-600); background: var(--green-50); }
+.pipe-step .ico { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; flex-shrink: 0; background: #efeee9; color: var(--ink-3); }
+.pipe-step.done .ico { background: var(--green-700); color: #fff; }
+.pipe-step.warn .ico { background: var(--warn-bg); color: var(--warn); }
+.pipe-step b { font-size: 12.5px; display: block; }
+.pipe-step span { font-size: 11.5px; color: var(--ink-3); }
+
+table.matrix { border-collapse: collapse; font-size: 12px; width: 100%; }
+.matrix th, .matrix td { border: 1px solid var(--line); padding: 6px 8px; text-align: center; white-space: nowrap; }
+.matrix th { background: #fbfbf9; font-size: 10.5px; letter-spacing: .04em; color: var(--ink-2); }
+.matrix td.l, .matrix th.l { text-align: left; }
+.matrix tr.total td { font-weight: 700; background: var(--green-50); }
+.matrix .lv { display: inline-block; min-width: 34px; border-radius: 6px; padding: 2px 6px; font-weight: 700; }
+.lv.ok { background: var(--green-100); color: var(--green-700); }
+.lv.bad { background: var(--red-bg); color: var(--red); }
+.lv.na { color: var(--ink-3); }
+.matrix input { width: 56px; padding: 4px 6px; border: 1px solid var(--line-strong); border-radius: 6px; text-align: center; font-size: 12px; }
+
+.rubric-row { display: grid; grid-template-columns: 34px 1fr 140px 170px; gap: 14px; align-items: start; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.rubric-row:last-child { border-bottom: 0; }
+.rubric-key { width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center; font-weight: 800; background: var(--green-100); color: var(--green-700); }
+.rubric-key.computed { background: var(--blue-bg); color: var(--blue); }
+.kind { font-size: 10px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
+.kind.computed { color: var(--blue); } .kind.reviewer { color: var(--green-600); }
+.score-big { font-size: 22px; font-weight: 800; }
+.score-big small { font-size: 12px; color: var(--ink-3); font-weight: 500; }
+
+.course-card { border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; margin-bottom: 14px; background: #fff; }
+.course-head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.chk { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 600; padding: 3px 9px; border-radius: 99px; background: #efeee9; color: var(--ink-3); }
+.chk.ok { background: var(--green-100); color: var(--green-700); }
+.file-btn { position: relative; overflow: hidden; }
+.file-btn input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.problems { margin: 8px 0 0; padding-left: 18px; font-size: 12px; color: #8f2a1b; max-height: 180px; overflow: auto; }
+
+.inspect-console { background: #0f2a20; color: #c9f0dd; font-family: var(--mono); font-size: 13px; border-radius: 12px; padding: 18px 20px; min-height: 120px; line-height: 1.8; }
+.inspect-console .ok { color: #7fe0b8; } .inspect-console .warn { color: #f0c25a; } .inspect-console .fail { color: #f08a76; }
+.big-stat { text-align: center; padding: 18px; border-radius: 12px; }
+.big-stat b { display: block; font-size: 32px; font-weight: 800; }
+.big-stat span { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; font-weight: 700; }
+.big-stat.PASS { background: var(--green-100); color: var(--green-700); }
+.big-stat.WARNING { background: var(--warn-bg); color: var(--warn); }
+.big-stat.FAIL { background: var(--red-bg); color: var(--red); }
+.big-stat.NEUTRAL { background: #f1f0eb; color: var(--ink-2); }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.scope-card { text-align: center; padding: 56px 24px; }
+.mini-kpi { border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+.mini-kpi .v { font-size: 22px; font-weight: 800; margin-top: 6px; }
+.mini-kpi .l { font-size: 11px; color: var(--ink-3); font-weight: 600; letter-spacing: .05em; text-transform: uppercase; }
+@media (max-width: 1100px) { .pipeline, .grid-4 { grid-template-columns: repeat(2, 1fr); } .grid-3 { grid-template-columns: 1fr; } .rubric-row { grid-template-columns: 34px 1fr; } }
+a.btn { text-decoration: none; color: inherit; }
+a.btn.primary { color: #fff; }

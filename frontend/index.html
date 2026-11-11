@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NBA Twin Readiness</title>
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<style>
+  /* ---- Palette matched to the NBA Twin Readiness dashboard ---- */
+  :root{
+    --bg:#0B2A22; --bg2:#164A3B;
+    --mint:#7FE0B8; --green:#2FA37C; --gold:#F2B544;
+    --text:#F4F1E8; --muted:#9DBBAE;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:radial-gradient(ellipse at 50% 38%, var(--bg2) 0%, var(--bg) 72%);
+    color:var(--text);
+    font-family:"Inter","Segoe UI",system-ui,-apple-system,Roboto,sans-serif;
+    overflow:hidden; cursor:pointer;
+  }
+  body::before{ /* faint grid = digital backdrop */
+    content:"";position:fixed;inset:0;
+    background-image:linear-gradient(rgba(127,224,184,.07) 1px,transparent 1px),
+                     linear-gradient(90deg,rgba(127,224,184,.07) 1px,transparent 1px);
+    background-size:44px 44px;
+    mask-image:radial-gradient(circle at 50% 42%,#000 0%,transparent 62%);
+    -webkit-mask-image:radial-gradient(circle at 50% 42%,#000 0%,transparent 62%);
+  }
+  .splash{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+          gap:20px;text-align:center;padding:24px;transition:opacity .45s ease,transform .45s ease}
+  .splash.exit{opacity:0;transform:scale(1.04)}
+
+  /* ---- Logo: real building -> digital twin -> NBA-ready check ---- */
+  .logo-wrap{position:relative}
+  .logo-wrap::after{content:"";position:absolute;inset:-12px;border-radius:38px;
+    border:1.5px solid var(--mint);opacity:0;animation:ring 1.6s ease-out 2.8s forwards}
+  .logo{width:min(30vw,132px);height:auto;display:block;overflow:visible;
+        filter:drop-shadow(0 10px 30px rgba(0,0,0,.35));
+        transform:scale(.6);opacity:0;animation:tileIn .8s cubic-bezier(.2,.9,.25,1.2) forwards}
+  .real{opacity:0;transform:translateY(8px);animation:rise .7s cubic-bezier(.2,.8,.2,1) .4s forwards}
+  .twin{stroke-dasharray:1;stroke-dashoffset:1;fill-opacity:0;
+        animation:draw 1.2s cubic-bezier(.65,0,.35,1) 1.0s forwards, twinFill .6s ease 2.0s forwards}
+  .axis{opacity:0;animation:fade .6s ease .8s forwards}
+  .scan{opacity:0;transform:translateY(-24px);animation:scan 1.2s cubic-bezier(.5,0,.5,1) .9s forwards}
+  .node,.badge{transform-box:fill-box;transform-origin:center;transform:scale(0);
+        animation:pop .45s cubic-bezier(.3,1.6,.5,1) var(--t) forwards}
+  .tick{stroke-dasharray:1;stroke-dashoffset:1;animation:draw .5s ease 2.6s forwards}
+
+  /* ---- Text ---- */
+  h1{font-size:clamp(24px,4.6vw,42px);font-weight:700;letter-spacing:-.01em;line-height:1.15}
+  h1 .ch{display:inline-block;opacity:0;transform:translateY(14px);filter:blur(6px);
+         animation:rise .5s cubic-bezier(.2,.8,.2,1) forwards}
+  h1 .acc{color:var(--gold)}
+  .tag{font-size:clamp(12px,1.6vw,14px);letter-spacing:.32em;text-transform:uppercase;font-weight:600;
+       background:linear-gradient(90deg,var(--muted) 0 40%,var(--mint) 50%,var(--muted) 60% 100%);
+       background-size:250% 100%;background-position:100% 0;
+       -webkit-background-clip:text;background-clip:text;color:transparent;
+       opacity:0;animation:fade .7s ease 2.6s forwards,shimmer 1.8s ease 2.8s forwards}
+
+  /* ---- Core idea chips: Real Department -> Digital Twin -> NBA Ready ---- */
+  .steps{display:flex;align-items:center;gap:8px;margin-top:4px;font-size:12px;font-weight:600;color:var(--muted)}
+  .steps span{padding:6px 12px;border-radius:999px;border:1px solid rgba(157,187,174,.25);opacity:0;
+              transform:translateY(4px);animation:lit .45s ease var(--t) forwards}
+  .steps span.done{animation:lit .45s ease var(--t) forwards, on .4s ease calc(var(--t) + .3s) forwards}
+  .steps i{width:18px;height:0;border-top:2px dotted rgba(127,224,184,.5);opacity:0;animation:fade .3s ease var(--t) forwards}
+  .bar{width:min(52vw,240px);height:2px;border-radius:2px;background:rgba(157,187,174,.15);overflow:hidden;margin-top:6px}
+  .bar span{display:block;height:100%;transform-origin:left;transform:scaleX(0);
+            background:linear-gradient(90deg,var(--green),var(--gold));animation:load 4.8s cubic-bezier(.3,0,.2,1) forwards}
+  .skip{position:fixed;bottom:20px;font-size:12px;color:var(--muted);opacity:0;animation:fade .5s ease 1.2s forwards}
+
+  @keyframes draw{to{stroke-dashoffset:0}}
+  @keyframes tileIn{to{opacity:1;transform:none}}
+  @keyframes twinFill{to{fill-opacity:.10}}
+  @keyframes fade{to{opacity:1}}
+  @keyframes pop{to{transform:scale(1)}}
+  @keyframes rise{to{opacity:1;transform:none;filter:none}}
+  @keyframes shimmer{to{background-position:0 0}}
+  @keyframes load{to{transform:scaleX(1)}}
+  @keyframes scan{0%{opacity:0;transform:translateY(-24px)}15%{opacity:1}85%{opacity:1}100%{opacity:0;transform:translateY(80px)}}
+  @keyframes ring{0%{opacity:.7;transform:scale(.85)}100%{opacity:0;transform:scale(1.25)}}
+  @keyframes lit{to{opacity:1;transform:none}}
+  @keyframes on{to{color:#0B2A22;background:var(--mint);border-color:var(--mint)}}
+
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;transition:none!important}
+  }
+</style>
+</head>
+<body>
+<main class="splash" id="splash" aria-label="Loading NBA Twin Readiness">
+  <div class="logo-wrap">
+    <svg class="logo" viewBox="0 0 120 120" aria-hidden="true">
+      <defs>
+        <g id="bld">
+          <polygon pathLength="1" points="18,46 54,24 90,46"/>
+          <rect pathLength="1" x="18" y="46" width="72" height="7"/>
+          <rect pathLength="1" x="22" y="55" width="8" height="25"/>
+          <rect pathLength="1" x="36" y="55" width="8" height="25"/>
+          <rect pathLength="1" x="50" y="55" width="8" height="25"/>
+          <rect pathLength="1" x="64" y="55" width="8" height="25"/>
+          <rect pathLength="1" x="78" y="55" width="8" height="25"/>
+          <rect pathLength="1" x="16" y="81" width="76" height="6"/>
+          <rect pathLength="1" x="12" y="88" width="84" height="6"/>
+        </g>
+        <clipPath id="L"><rect x="0" y="0" width="54" height="120"/></clipPath>
+        <clipPath id="R"><rect x="54" y="0" width="66" height="120"/></clipPath>
+        <linearGradient id="scanG" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#7FE0B8" stop-opacity="0"/>
+          <stop offset=".85" stop-color="#7FE0B8" stop-opacity=".3"/>
+          <stop offset="1" stop-color="#7FE0B8" stop-opacity=".9"/>
+        </linearGradient>
+      </defs>
+      <rect x="0.75" y="0.75" width="118.5" height="118.5" rx="27.5" fill="#164A3B" stroke="#7FE0B8" stroke-opacity=".35" stroke-width="1.5"/>
+      <!-- real department -->
+      <g class="real"><use href="#bld" clip-path="url(#L)" fill="#F4F1E8"/></g>
+      <!-- scan building the twin -->
+      <g clip-path="url(#R)"><rect class="scan" x="54" y="10" width="66" height="22" fill="url(#scanG)"/></g>
+      <!-- digital twin -->
+      <use class="twin" href="#bld" clip-path="url(#R)" fill="#7FE0B8"
+           stroke="#7FE0B8" stroke-width="2.2" stroke-linejoin="round"/>
+      <circle class="node" style="--t:1.8s" cx="90" cy="46" r="2.8" fill="#7FE0B8"/>
+      <circle class="node" style="--t:2.0s" cx="86" cy="55" r="2.4" fill="#7FE0B8"/>
+      <circle class="node" style="--t:2.2s" cx="72" cy="80" r="2.4" fill="#7FE0B8"/>
+      <line class="axis" x1="54" y1="16" x2="54" y2="100" stroke="#7FE0B8" stroke-opacity=".45" stroke-width="1.4" stroke-dasharray="2.5 3"/>
+      <!-- NBA-ready badge -->
+      <circle class="badge" style="--t:2.4s" cx="98" cy="97" r="14" fill="#F2B544" stroke="#164A3B" stroke-width="3.5"/>
+      <path class="tick" pathLength="1" d="M91.8 97.4 L96.3 101.9 L104.3 92.6" fill="none" stroke="#123D31" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+
+  <h1 id="title" data-text="NBA Twin Readiness">NBA Twin Readiness</h1>
+  <p class="tag">Your Digital AI Twin</p>
+  <div class="steps" aria-hidden="true">
+    <span class="done" style="--t:2.9s">Real Department</span><i style="--t:3.3s"></i>
+    <span class="done" style="--t:3.5s">Digital Twin</span><i style="--t:3.9s"></i>
+    <span class="done" style="--t:4.1s">NBA Ready</span>
+  </div>
+  <div class="bar"><span></span></div>
+  <p class="skip">Click or press any key to skip</p>
+</main>
+
+<script>
+  /* ---- Config ---- */
+  const DASHBOARD_URL    = "login.html";     // splash -> directly to login
+  const SPLASH_MS        = 5000;             // 5.0 seconds for clear, graceful viewing
+  const ONCE_PER_SESSION = false;            // show splash screen on visits
+  const ACCENT_LETTERS   = 3;                // first N letters in gold ("NBA")
+
+  const go = () => window.location.replace(DASHBOARD_URL);
+
+  const h1 = document.getElementById("title");
+  const text = h1.dataset.text;
+  h1.textContent = "";
+  [...text].forEach((c, i) => {
+    const s = document.createElement("span");
+    s.className = "ch" + (i < ACCENT_LETTERS ? " acc" : "");
+    s.textContent = c === " " ? " " : c;
+    s.style.animationDelay = (1.6 + i * 0.045) + "s";
+    h1.appendChild(s);
+  });
+  h1.setAttribute("aria-label", text);
+
+  let left = false;
+  const leave = () => {
+    if (left) return; left = true;
+    document.getElementById("splash").classList.add("exit");
+    setTimeout(go, 450);
+  };
+  setTimeout(leave, SPLASH_MS);
+  addEventListener("click", leave);
+  addEventListener("keydown", leave);
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+# requirements.txt
+openai
+python-dotenv
+fastapi
+uvicorn
+pypdf
+python-docx
+scikit-learn
+numpy

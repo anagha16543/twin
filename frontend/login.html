@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign in — NBA Twin Readiness</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    .login-wrap { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; }
+    .login-side { background: var(--green-700); color: #fff; padding: 48px 56px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
+    .login-side::after { content: ""; position: absolute; right: -140px; bottom: -140px; width: 420px; height: 420px; border-radius: 50%; border: 60px solid rgba(255,255,255,.05); }
+    .login-side h1 { font-size: 40px; line-height: 1.08; letter-spacing: -.03em; margin: 0 0 14px; max-width: 460px; }
+    .login-side p { opacity: .78; max-width: 420px; line-height: 1.55; margin: 0; }
+    .login-form { display: grid; place-items: center; padding: 40px; }
+    .login-card { width: min(400px, 100%); }
+    .login-card h2 { font-size: 24px; margin: 0 0 6px; letter-spacing: -.02em; }
+    .login-card .sub { color: var(--ink-3); font-size: 13.5px; margin: 0 0 26px; }
+    @media (max-width: 860px) { .login-wrap { grid-template-columns: 1fr; } .login-side { display: none; } }
+  </style>
+</head>
+<body>
+  <div class="login-wrap">
+    <aside class="login-side">
+      <div class="sb-brand" style="padding:0;border:0">
+        <div class="sb-logo"><i data-icon="cap" data-size="20"></i></div>
+        <div><div class="sb-title">NBA Twin Readiness</div><div class="sb-sub">Accreditation Portal</div></div>
+      </div>
+      <div>
+        <h1>Criterion 3 — Teaching-Learning &amp; Assessment</h1>
+        <p>Deterministic NBA Tier-I scoring, verified evidence and AI-assisted gap analysis for your department — live from the Digital Twin.</p>
+      </div>
+      <div class="small" style="opacity:.6">NBA Manual for UG Engineering · Tier I · 2026 Edition</div>
+    </aside>
+    <main class="login-form">
+      <form class="login-card" id="form" novalidate>
+        <h2>Sign in</h2>
+        <p class="sub">Use your HOD or faculty account. HOD/Admin roles can run evaluations.</p>
+        <div id="msg"></div>
+        <div class="field"><label for="email">Email</label><input class="input" id="email" type="email" autocomplete="username" required placeholder="hod@institute.edu" /></div>
+        <div class="field"><label for="password">Password</label><input class="input" id="password" type="password" autocomplete="current-password" required /></div>
+        <button class="btn primary" id="submit" type="submit" style="width:100%;justify-content:center;padding:11px">Sign in</button>
+        <p class="small muted" style="margin-top:14px">New faculty? <a href="#" id="showReg">Register here</a> — the HOD approves your account.</p>
+        <p class="small muted" style="margin-top:6px">Backend: <span class="code" id="apiBase"></span></p>
+      </form>
+      <form class="login-card hidden" id="regForm" novalidate>
+        <h2>Faculty registration</h2>
+        <p class="sub">Your account stays pending until the HOD approves it in Faculty Approvals.</p>
+        <div id="regMsg"></div>
+        <div class="field"><label>Full name</label><input class="input" name="full_name" required /></div>
+        <div class="field"><label>Email</label><input class="input" name="email" type="email" required /></div>
+        <div class="field"><label>Password (min 8 characters)</label><input class="input" name="password" type="password" minlength="8" required /></div>
+        <div class="field"><label>Faculty ID</label><input class="input" name="faculty_id" required /></div>
+        <div class="field"><label>Designation</label><input class="input" name="designation" value="Assistant Professor" required /></div>
+        <div class="field"><label>Department</label><input class="input" name="department" value="Artificial Intelligence and Machine Learning" required /></div>
+        <button class="btn primary" type="submit" style="width:100%;justify-content:center;padding:11px">Submit registration</button>
+        <p class="small muted" style="margin-top:14px"><a href="#" id="showLogin">Back to sign in</a></p>
+      </form>
+    </main>
+  </div>
+  <script src="js/config.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/api.js"></script>
+  <script>
+    hydrateIcons();
+    U.$("#apiBase").textContent = NBA_CONFIG.API_BASE;
+    if (API.token.get()) location.replace("app.html#/dashboard");
+    if (new URLSearchParams(location.search).has("expired"))
+      U.$("#msg").innerHTML = '<div class="alert info" style="margin-bottom:14px">Your session expired. Please sign in again.</div>';
+
+    U.$("#showReg").onclick = (e) => { e.preventDefault(); U.$("#form").classList.add("hidden"); U.$("#regForm").classList.remove("hidden"); };
+    U.$("#showLogin").onclick = (e) => { e.preventDefault(); U.$("#regForm").classList.add("hidden"); U.$("#form").classList.remove("hidden"); };
+    U.$("#regForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const f = e.target.elements, body = {};
+      ["full_name", "email", "password", "faculty_id", "designation", "department"].forEach((k) => body[k] = f[k].value.trim());
+      try {
+        await API.register(body);
+        U.$("#regMsg").innerHTML = '<div class="alert ok" style="margin-bottom:14px">Registered. Ask the HOD to approve you under Faculty Approvals, then sign in.</div>';
+        e.target.reset();
+      } catch (err) { U.$("#regMsg").innerHTML = `<div class="alert err" style="margin-bottom:14px">${U.esc(err.message)}</div>`; }
+    });
+
+    U.$("#form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const btn = U.$("#submit");
+      const email = U.$("#email").value.trim(), password = U.$("#password").value;
+      if (!email || !password) { U.$("#msg").innerHTML = '<div class="alert err" style="margin-bottom:14px">Enter email and password.</div>'; return; }
+      btn.disabled = true; btn.textContent = "Signing in…";
+      try {
+        const t = await API.login(email, password);
+        API.token.set(t.access_token);
+        location.replace("app.html#/dashboard");
+      } catch (err) {
+        U.$("#msg").innerHTML = `<div class="alert err" style="margin-bottom:14px">${U.esc(err.message)}</div>`;
+        btn.disabled = false; btn.textContent = "Sign in";
+      }
+    });
+  </script>
+</body>
+</html>

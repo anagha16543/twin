@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NBA Twin Readiness — Accreditation Portal</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/app.css" />
+</head>
+<body>
+  <div class="shell">
+    <!-- ============================ SIDEBAR ============================ -->
+    <aside class="sidebar">
+      <a class="sb-brand" href="#/dashboard" style="text-decoration:none;color:#fff">
+        <div class="sb-logo"><i data-icon="cap" data-size="20"></i></div>
+        <div><div class="sb-title">NBA Twin Readiness</div><div class="sb-sub">Accreditation Portal</div></div>
+      </a>
+      <div class="sb-dept">
+        <div class="sb-dept-name"><i data-icon="building" data-size="16"></i><span id="sbDept">Dept. of —</span></div>
+        <div class="sb-dept-meta" id="sbMeta">AY — • Tier-I UG</div>
+      </div>
+      <nav class="sb-nav" aria-label="Main">
+        <a class="sb-item" data-route="dashboard" href="#/dashboard"><i data-icon="grid" data-size="18"></i>Dashboard</a>
+        <button class="sb-item parent" id="criteriaToggle" aria-expanded="true"><i data-icon="file" data-size="18"></i>Criteria Workspace<span class="chev"><i data-icon="chevDown" data-size="16"></i></span></button>
+        <div class="sb-sub-list" id="criteriaList">
+          <a class="sb-subitem" data-route="c3" href="#/c3"><span><b>C3:</b> Teaching-Learning &amp; Assessment</span><span class="m">120M</span></a>
+          <div class="sb-c3" id="c3Nav">
+            <div class="sb-group">Data</div>
+            <a class="sb-leaf" data-route="courses" href="#/courses"><i data-icon="upload" data-size="13"></i>Courses &amp; Marks</a>
+            <a class="sb-leaf" data-route="attainment" href="#/attainment"><i data-icon="target" data-size="13"></i>CO / PO Attainment</a>
+            <div class="sb-group">Sub-criteria</div>
+            <div id="sbSubcriteria"></div>
+            <div class="sb-group">Proof</div>
+            <a class="sb-leaf" data-route="evidence" href="#/evidence"><i data-icon="file" data-size="13"></i>Evidence Repository</a>
+            <a class="sb-leaf" data-route="gaps" href="#/gaps"><i data-icon="alert" data-size="13"></i>Gaps &amp; Actions</a>
+          </div>
+          <a class="sb-subitem" data-route="scope-c4" href="#/scope/C4"><span><b>C4:</b> Students' Performance</span><span class="m">120M</span></a>
+          <a class="sb-subitem" data-route="scope-c5" href="#/scope/C5"><span><b>C5:</b> Faculty Information</span><span class="m">100M</span></a>
+          <a class="sb-subitem" data-route="scope-c6" href="#/scope/C6"><span><b>C6:</b> Faculty Contributions</span><span class="m">120M</span></a>
+        </div>
+        <a class="sb-item" data-route="inspection" href="#/inspection"><i data-icon="shield" data-size="18"></i>Virtual Inspection<span class="sb-badge sim">SIMULATOR</span></a>
+        <a class="sb-item" data-route="approvals" href="#/approvals"><i data-icon="userCheck" data-size="18"></i>Faculty Approvals<span class="sb-badge hod">HOD</span></a>
+        <a class="sb-item" data-route="notifications" href="#/notifications"><i data-icon="bell" data-size="18"></i>Notifications<span class="sb-count hidden" id="sbNotifCount"></span></a>
+        <a class="sb-item" data-route="profile" href="#/profile"><i data-icon="user" data-size="18"></i>My Profile</a>
+        <a class="sb-item" data-route="settings" href="#/settings"><i data-icon="settings" data-size="18"></i>Settings</a>
+      </nav>
+      <div class="sb-foot">
+        <button class="insight-pill" id="insightBtn" aria-haspopup="true"><span class="n" id="insightAvatar">N</span><span id="insightLabel">0 Insights</span></button>
+        <div class="insight-pop hidden" id="insightPop" role="dialog" aria-label="Insights"></div>
+        <button class="icon-btn-light" id="logoutBtn" title="Sign out" aria-label="Sign out"><i data-icon="logout" data-size="18"></i></button>
+      </div>
+    </aside>
+
+    <!-- ============================ MAIN ============================ -->
+    <div class="main">
+      <header class="topbar">
+        <div>
+          <div class="crumbs" id="crumbs">Home</div>
+          <div class="page-title" id="pageTitle">Criterion 3: Teaching-Learning and Assessment</div>
+        </div>
+        <div class="top-right">
+          <div class="chip-ctx" id="ctxChip">— <span class="dot">•</span> AY —</div>
+          <div style="position:relative">
+            <button class="icon-btn" id="bellBtn" aria-label="Notifications" aria-haspopup="true"><i data-icon="bell" data-size="18"></i><span class="count hidden" id="bellCount">0</span></button>
+            <div class="popover hidden" id="notifPop" role="dialog" aria-label="Notifications"></div>
+          </div>
+          <a class="user-chip" href="#/profile" style="text-decoration:none;color:inherit">
+            <div class="avatar" id="userAvatar">?</div>
+            <div class="user-meta"><div class="user-name" id="userName">—</div><div class="user-role" id="userRole">—</div></div>
+          </a>
+        </div>
+      </header>
+      <div class="content" id="view"><div class="loading-screen">Loading Criterion 3 workspace…</div></div>
+    </div>
+  </div>
+
+  <button class="ai-fab" id="aiFab"><i data-icon="sparkles" data-size="18"></i>NBA AI Assistant</button>
+  <div id="drawerRoot"></div>
+  <div class="chart-tip hidden" id="chartTip"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/chart.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/pages-c3.js"></script>
+  <script src="js/pages-other.js"></script>
+  <script>App.start();</script>
+</body>
+</html>
